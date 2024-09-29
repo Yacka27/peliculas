@@ -9,9 +9,9 @@ const MediaSchema = Schema({
     fechaCreacion : {type: Date, required: true},
     fechaActualizacion : {type: Date, required: true},
     añoEstreno : {type: Date, required: true},
-    generoP : {type: Schema.Types.ObjectId, ref: "Genero", required: true},
-    directorP: {type: Schema.Types.ObjectId, ref: "Director", required: true},
+    genero : {type: Schema.Types.ObjectId, ref: "Genero", required: true},
+    director: {type: Schema.Types.ObjectId, ref: "Director", required: true},
     productora: {type: Schema.Types.ObjectId, ref: "Productora", required: true},
     tipo: {type: Schema.Types.ObjectId, ref: "Tipo", required: true},
 });
- module.exports = model("Media", MediaSchema);
+module.exports = model("Media", MediaSchema);

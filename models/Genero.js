@@ -7,4 +7,4 @@ const GeneroSchema = Schema({
     fechaActualizacion : {type: Date, required: true},
     descripcion : {type: String, required: true},
 });
- module.exports = model("Genero", GeneroSchema);
+module.exports = model("Genero", GeneroSchema);

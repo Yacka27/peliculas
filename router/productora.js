@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const Tipo = require("../models/Tipo");
+const Productora = require("../models/Productora");
 const { validationResult, check } = require("express-validator");
 
 const router = Router();
@@ -8,8 +8,8 @@ router.get("/", async function (req,res) {
 
     try {
         
-        const tipos = await Tipo.find();
-        res.send(tipos);
+        const productoras = await Productora.find();
+        res.send(productoras);
 
     } catch (error) {
         console.log(error)
@@ -21,77 +21,78 @@ router.get("/", async function (req,res) {
    // POST metodo
 router.post('/',[
     check( 'nombre', 'invalid.nombre').not().isEmpty(),
+    check( 'estado', 'invalid.estado').isIn(['Activo', 'Inactivo']),
     check( 'fechaCreacion', 'invalid.fecha').isDate(),
     check( 'fechaActualizacion', 'invalid.fecha').isDate(),
+    check( 'slogan', 'invalid.slogan').isString(),
     check( 'descripcion', 'invalid.descripcion').isString(),
 ], async function (req,res) {
 
     try {
 
         const errors = validationResult(req);
-        if (!errors.isEmpty) {
+        if (!errors.isEmpty()) {
             return res.status(400).json({mensaje: errors.array()});
         }
 
-        const existetipo = await Tipo.findOne({nombre: req.body.nombre})
-        if (existetipo) {
-            return res.status(400).send('Tipo ya existe')
-        }
+        let productora = new Productora();
+        productora.nombre = req.body.nombre;
+        productora.estado = req.body.estado;
+        productora.fechaCreacion = new Date;
+        productora.fechaActualizacion = new Date;
+        productora.slogan = req.body.slogan;
+        productora.descripcion = req.body.descripcion;
 
-        let tipo = new Tipo();
-        tipo.nombre = req.body.nombre;
-        tipo.fechaCreacion = new Date;
-        tipo.fechaActualizacion = new Date;
-        tipo.descripcion = req.body.descripcion;
-
-        tipo = await tipo.save();
-        res.send(tipo);
+        productora = await productora.save();
+        res.send(productora);
 
     } catch (error) {
         console.log(error);
-        res.status(500).send('Ocurrio un error al crear tipo')
+        res.status(500).send('Ocurrio un error al crear productora')
     }
     
-  });
+});
 
   // PUT
-  router.put('/:productoraId', [
-    check('nombre', 'invalid.nombre').not().isEmpty(),
-    check('email', 'invalid.email').isEmail(),
-    check('estado', 'invalid.estado').isIn(['Activo', 'Inactivo']),
+router.put('/:productoraId', [
+    check( 'nombre', 'invalid.nombre').not().isEmpty(),
+    check( 'estado', 'invalid.estado').isIn(['Activo', 'Inactivo']),
+    check( 'fechaCreacion', 'invalid.fecha').isDate(),
+    check( 'fechaActualizacion', 'invalid.fecha').isDate(),
+    check( 'slogan', 'invalid.slogan').isString(),
+    check( 'descripcion', 'invalid.descripcion').isString(),
 ], async function (req, res) {
 
     try {
 
         const errors = validationResult(req);
+
         if (!errors.isEmpty()) {
             return res.status(400).json({ mensaje: errors.array() });
         }
 
-        let tipo = await tipo.findById(req.params.tipoId);
-        if (!tipo) {
-            return res.status(400).send('Usuario no existe');
+        let productora = await Productora.findById(req.params.productoraId);
+
+        if (!productora) {
+            return res.status(400).send('Productora ya existe');
         }
 
-        const existetipo = await Tipo.findOne({ email: req.body.email, _id:{ $ne: tipo._id} });
-        if (existetipo) {
-            return res.status(400).send('Email ya existe')
-        }
+        productora.nombre = req.body.nombre;
+        productora.estado = req.body.estado;
+        productora.fechaCreacion = new Date;
+        productora.fechaActualizacion = new Date;
+        productora.slogan = req.body.slogan;
+        productora.descripcion = req.body.descripcion;
 
-        tipo.nombre = req.body.nombre;
-        tipo.email = req.body.email;
-        tipo.estado = req.body.estado;
-        tipo.fechaActualizacion = new Date;
-
-        tipo = await usuario.save(); 
-        res.send(tipo);
+        productora = await productora.save();
+        res.send(productora);
 
     } catch(error) {
         console.log(error);
-        res.status(500).send('Ocurrió un error al crear tipo')
+        res.status(500).send('Ocurrió un error al crear productora')
         
     }
     
-  });
+});
 
 module.exports = router;

@@ -7,4 +7,4 @@ const DirectorSchema = Schema({
     fechaActualizacion : {type: Date, required: true},
     
 });
- module.exports = model("Director", DirectorSchema);
+module.exports = model("Director", DirectorSchema);

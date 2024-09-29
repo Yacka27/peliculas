@@ -19,13 +19,13 @@ router.get("/", async function (req,res) {
     
 });
 
-   // POST 
+   // POST
 router.post('/',[
     check( 'nombre', 'invalid.nombre').not().isEmpty(),
     check( 'estado', 'invalid.estado').isIn(['Activo', 'Inactivo']),
     check( 'fechaCreacion', 'invalid.fecha').isDate(),
     check( 'fechaActualizacion', 'invalid.fecha').isDate(),
-   
+
 ], async function (req,res) {
 
     try {
@@ -50,13 +50,12 @@ router.post('/',[
         res.status(500).send('Ocurrio un error al crear director')
     }
     
-  });
+    });
 
   // PUT
-  router.put('/:directorId', [
+router.put('/:directorId', [
     check( 'nombre', 'invalid.nombre').not().isEmpty(),
     check( 'estado', 'invalid.estado').isIn(['Activo', 'Inactivo']),
-    check( 'fechaCreacion', 'invalid.fecha').isDate(),
     check( 'fechaActualizacion', 'invalid.fecha').isDate(),
 ], async function (req, res) {
 
@@ -67,26 +66,25 @@ router.post('/',[
             return res.status(400).json({ mensaje: errors.array() });
         }
 
-        let director = await director.findById(req.params.directorId);
+        let director = await Director.findById(req.params.directorId);
         if (!director) {
-            return res.status(400).send('Director no existe');
+            return res.status(400).send('Director ya existe');
         }
 
 
         director.nombre = req.body.nombre;
         director.estado = req.body.estado;
-        director.fechaCreacion = new Date;
         director.fechaActualizacion = new Date;
 
-        director = await director.save(); 
-        res.send(tipo);
+        director = await director.save();
+        res.send(director);
 
     } catch(error) {
         console.log(error);
-        res.status(500).send('Ocurrió un error al crear Director')
+        res.status(500).send('Ocurrió un error al actualizar Director')
         
     }
     
-  });
+});
 
 module.exports = router;
