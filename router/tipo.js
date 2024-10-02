@@ -17,10 +17,10 @@ router.get("/", async function (req, res) {
 
 // POST para crear un nuevo tipo
 router.post('/', [
-    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('fechaCreacion', 'Fecha de creación inválida').isDate(),
-    check('fechaActualizacion', 'Fecha de actualización inválida').isDate(),
-    check('descripcion', 'Descripción inválida').isString(),
+    check('nombre', 'invalid.nombre').not().isEmpty(),
+    check('fechaCreacion', 'invalid.fecha').isDate(),
+    check('fechaActualizacion', 'invalid.fecha').isDate(),
+    check('descripcion', 'invalid.descripcion').isString(),
 ], async function (req, res) {
     try {
         const errors = validationResult(req);
@@ -30,8 +30,8 @@ router.post('/', [
 
         let tipo = new Tipo();
         tipo.nombre = req.body.nombre;
-        tipo.fechaCreacion = new Date();  // Fecha actual para la creación
-        tipo.fechaActualizacion = new Date();  // Fecha actual para la actualización
+        tipo.fechaCreacion = new Date();
+        tipo.fechaActualizacion = new Date();
         tipo.descripcion = req.body.descripcion;
 
         tipo = await tipo.save();
@@ -44,9 +44,9 @@ router.post('/', [
 
 // PUT para actualizar un tipo existente
 router.put('/:tipoId', [
-    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('fechaActualizacion', 'Fecha de actualización inválida').isDate(),
-    check('descripcion', 'Descripción inválida').isString(),
+    check('nombre', 'invalid.nombre').not().isEmpty(),
+    check('fechaActualizacion', 'invalid.fecha').isDate(),
+    check('descripcion', 'invalid.descripcion').isString(),
 ], async function (req, res) {
     try {
         const errors = validationResult(req);

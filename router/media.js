@@ -155,6 +155,22 @@ router.put('/:mediaId', [
         res.status(500).send('Ocurrió un error al crear media')
         
     }
+    
 });
+
+// DELETE: Eliminar una media por su ID
+router.delete('/:mediaId', async function (req, res) {
+    try {
+        const media = await Media.findByIdAndDelete(req.params.mediaId);
+        if (!media) {
+            return res.status(404).send('Media no encontrada');
+        }
+        res.send('Media eliminada exitosamente');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Ocurrió un error al eliminar la media');
+    }
+});
+
 
 module.exports = router;
