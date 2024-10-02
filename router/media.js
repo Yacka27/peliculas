@@ -45,7 +45,7 @@ router.post('/',[
         const existeMediaPorSerial = await Media.findOne({ serial: req.body.serial });
         
         if (existeMediaPorSerial) {
-            return res.status(400).send('El serial ya exixte pra otra media ')
+            return res.status(400).send('El serial ya exixte para la media ')
         }
 
         let media = new Media();
@@ -92,11 +92,9 @@ router.get('/', async function (req, res) {
         ]);
     
         res.send(medias);
-        //res.json({ success: true, data: medias });//
 
     } catch(error){
         console.log(error)
-        //res.status(500).json({ success: false, message: 'Error fetching media data' });//
     }
     
     })
@@ -157,7 +155,6 @@ router.put('/:mediaId', [
         res.status(500).send('Ocurrió un error al crear media')
         
     }
-    
 });
 
 module.exports = router;
